@@ -1,0 +1,77 @@
+@page "/attendance"
+@using System.ComponentModel.DataAnnotations
+
+<h3>Attendance Tracker</h3>
+
+<EditForm Model="attendanceModel" OnValidSubmit="MarkAttendance">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label>Event Name:</label>
+        <InputText @bind-Value="attendanceModel.EventName" class="form-control" />
+        <ValidationMessage For="@(() => attendanceModel.EventName)" />
+    </div>
+    <div class="form-group">
+        <label>Participant Name:</label>
+        <InputText @bind-Value="attendanceModel.ParticipantName" class="form-control" />
+        <ValidationMessage For="@(() => attendanceModel.ParticipantName)" />
+    </div>
+    <button type="submit" class="btn btn-success">Mark Attendance</button>
+</EditForm>
+
+@if (attendanceList.Any())
+{
+    <h4 class="mt-4">Attendance List</h4>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Event Name</th>
+                <th>Participant Name</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var record in attendanceList)
+            {
+                <tr>
+                    <td>@record.EventName</td>
+                    <td>@record.ParticipantName</td>
+                    <td>@record.Timestamp.ToString("g")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private AttendanceModel attendanceModel = new();
+    private List<AttendanceRecord> attendanceList = new();
+
+    private void MarkAttendance()
+    {
+        attendanceList.Add(new AttendanceRecord
+        {
+            EventName = attendanceModel.EventName,
+            ParticipantName = attendanceModel.ParticipantName,
+            Timestamp = DateTime.Now
+        });
+        attendanceModel = new AttendanceModel(); // Reset form
+    }
+
+    public class AttendanceModel
+    {
+        [Required(ErrorMessage = "Event Name is required.")]
+        public string EventName { get; set; }
+
+        [Required(ErrorMessage = "Participant Name is required.")]
+        public string ParticipantName { get; set; }
+    }
+
+    public class AttendanceRecord
+    {
+        public string EventName { get; set; }
+        public string ParticipantName { get; set; }
+        public DateTime Timestamp { get; set; }
+    }
+}

@@ -1,0 +1,40 @@
+<div class="card event-card">
+    <div class="card-body">
+        <h5 class="card-title">@eventModel.EventName</h5>
+        <h6 class="card-subtitle mb-2 text-muted">@eventModel.EventDate?.ToString("MMMM dd, yyyy")</h6>
+        <p class="card-text">@eventModel.Location</p>
+    </div>
+</div>
+<EditForm Model="eventModel" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="event-card" style="border: 1px solid #ccc; padding: 16px; border-radius: 8px; margin-bottom: 12px;">
+        <label>Event Name:</label>
+        <InputText @bind-Value="eventModel.EventName" class="form-control" />
+        <ValidationMessage For="@(() => eventModel.EventName)" />
+        <br />
+
+        <label>Date:</label>
+        <InputDate @bind-Value="eventModel.EventDate" class="form-control" />
+        <ValidationMessage For="@(() => eventModel.EventDate)" />
+        <br />
+
+        <label>Location:</label>
+        <InputText @bind-Value="eventModel.Location" class="form-control" />
+        <ValidationMessage For="@(() => eventModel.Location)" />
+        <br />
+        <button type="submit" class="btn btn-primary">Save Event</button>
+    </div>
+</EditForm>
+    
+@code {
+    [Parameter]
+    public EventModel eventModel { get; set; }
+
+    private void HandleValidSubmit()
+    {
+        // Only valid data will reach here due to validation
+        // Handle the valid form submission (e.g., save event)
+    }
+}

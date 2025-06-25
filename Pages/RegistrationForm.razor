@@ -1,0 +1,54 @@
+@page "/register"
+@using System.ComponentModel.DataAnnotations
+
+<EditForm Model="registrationModel" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label>Name:</label>
+        <InputText @bind-Value="registrationModel.Name" class="form-control" />
+        <ValidationMessage For="@(() => registrationModel.Name)" />
+    </div>
+    <div class="form-group">
+        <label>Email:</label>
+        <InputText @bind-Value="registrationModel.Email" class="form-control" />
+        <ValidationMessage For="@(() => registrationModel.Email)" />
+    </div>
+    <button type="submit" class="btn btn-primary">Register</button>
+</EditForm>
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger mt-2">@errorMessage</div>
+}
+@if (isSuccess)
+{
+    <div class="alert alert-success mt-2">Registration successful!</div>
+}
+
+@code {
+    private RegistrationModel registrationModel = new();
+    private string errorMessage;
+    private bool isSuccess = false;
+
+    private void HandleValidSubmit()
+    {
+        try
+        {
+            // Simulate registration logic
+            // Throw an exception to simulate an error (remove in production)
+            // throw new Exception("Simulated registration error.");
+
+            // If registration is successful
+            isSuccess = true;
+            errorMessage = null;
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Registration failed: {ex.Message}";
+            isSuccess = false;
+        }
+    }
+
+}

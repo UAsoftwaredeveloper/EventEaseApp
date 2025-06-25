@@ -1,0 +1,18 @@
+@page "/events"
+@using EventEaseApp.Components
+<h2>Event List</h2>
+
+@foreach (var ev in events)
+{
+    <EventCard 
+        @key="ev.EventName" 
+        eventModel="ev" />
+}
+
+@code {
+    private List<EventModel> events = new()
+    {
+        new EventModel { EventName = "Tech Conference", EventDate = new DateTime(2025, 7, 10), Location = "Delhi" },
+        new EventModel { EventName = "Music Fest", EventDate = new DateTime(2025, 8, 5), Location = "Mumbai" }
+    };
+}
